@@ -3,3 +3,5 @@ node_modules/*
 src/*
 tests/*
 karma.conf.js
+bin/UT
+bin/coverage

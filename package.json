@@ -1,5 +1,5 @@
 {
-  "name": "odataclient",
+  "name": "coveo-odata",
   "version": "0.0.1",
   "description": "",
   "main": "bin/js/odata.js",
@@ -8,7 +8,8 @@
     "build": "webpack",
     "test": "karma start --single-run",
     "test:watch": "karma start",
-    "test:browser": "karma start --browsers=Chrome"
+    "test:browser": "karma start --browsers=Chrome",
+    "publish": "npm publish --access=public"
   },
   "author": "",
   "license": "ISC",
