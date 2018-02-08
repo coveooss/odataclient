@@ -2,7 +2,7 @@ import { HttpMethod } from "../http/HttpConstants";
 import { ODataQueryOption, CRLF } from "./ODataConstants";
 import { HttpRequestBuilder } from "../http/HttpRequestBuilder";
 import { IHttpHeader } from "../http/HttpHeader";
-import { ODataQueryStringBuilder } from "./ODataQueryStringBuilder";
+import { QueryStringBuilder } from "./QueryStringBuilder";
 
 export interface IODataOptions {
     endpoint: string;
@@ -10,68 +10,68 @@ export interface IODataOptions {
     httpVerb?: HttpMethod;
 }
 
-export class ODataBuilder {
+export class OData {
     private config: IODataOptions;
-    private request: ODataQueryStringBuilder;
+    private request: QueryStringBuilder;
     private data: string;
 
     constructor(config?: IODataOptions) {
         this.config = config;
-        this.request = new ODataQueryStringBuilder();
+        this.request = new QueryStringBuilder();
     }
 
-    setVerb(verb: HttpMethod): ODataBuilder {
+    setVerb(verb: HttpMethod): OData {
         this.config.httpVerb = verb;
         return this;
     }
 
-    where: (filter: string) => ODataBuilder = this.filter;
-    filter(filter: string): ODataBuilder {
+    where: (filter: string) => OData = this.filter;
+    filter(filter: string): OData {
         this.request.addIfNotExists(ODataQueryOption.Filter, filter);
         return this;
     }
 
-    orderby(order: string): ODataBuilder {
+    orderby(order: string): OData {
         this.request.addIfNotExists(ODataQueryOption.OrderBy, order);
         return this;
     }
 
-    select(attributes: string[]): ODataBuilder {
+    select(attributes: string[]): OData {
         this.request.addIfNotExists(ODataQueryOption.Select, attributes.join(","));
         return this;
     }
 
-    count(): ODataBuilder {
+    count(): OData {
         this.request.addIfNotExists(ODataQueryOption.Count, "true");
         return this;
     }
 
-    top(number: number): ODataBuilder {
+    top(number: number): OData {
         this.request.addIfNotExists(ODataQueryOption.Top, number.toString());
         return this;
     }
 
-    get(): ODataBuilder {
+    get(): OData {
         this.config.httpVerb = HttpMethod.Get;
         return this;
     }
 
-    post(data: any): ODataBuilder {
+    post(data: any): OData {
         this.config.httpVerb = HttpMethod.Post;
         return this;
     }
 
-    patch(data: any): ODataBuilder {
+    patch(data: any): OData {
         this.config.httpVerb = HttpMethod.Patch;
         return this;
     }
 
-    withBody(data: string): ODataBuilder {
+    withBody(data: string): OData {
         this.data = data;
         return this;
     }
 
-    delete(): ODataBuilder {
+    delete(): OData {
         this.config.httpVerb = HttpMethod.Delete;
         return this;
     }

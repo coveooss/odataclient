@@ -1,5 +1,5 @@
 {
-  "name": "odata-client",
+  "name": "odataclient",
   "version": "0.0.1",
   "description": "",
   "main": "bin/js/odata.js",

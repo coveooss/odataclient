@@ -1,2 +1,2 @@
-export { ODataBuilder } from "./odata/ODataBuilder";
-export { ODataBatchBuilder } from "./batch/ODataBatchBuilder";
+export { OData } from "./odata/OData";
+export { Batch } from "./batch/Batch";

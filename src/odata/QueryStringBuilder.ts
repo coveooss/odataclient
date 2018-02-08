@@ -13,7 +13,7 @@ export class QueryComponent implements IQueryComponent {
     }
 }
 
-export class ODataQueryStringBuilder {
+export class QueryStringBuilder {
     queryList: IQueryComponent[];
 
     constructor() {

@@ -1,12 +1,13 @@
 import { CRLF } from "../odata/ODataConstants";
-import { ODataBuilder, IODataOptions } from "../odata/ODataBuilder";
+import { OData, IODataOptions } from "../odata/OData";
 import { HttpRequestBuilder } from "../http/HttpRequestBuilder";
 import { HttpMethod } from "../http/HttpConstants";
 import { IHttpHeader } from "../http/HttpHeader";
 import { Guid } from "../utils/Guid";
-export class ODataBatchBuilder {
+
+export class Batch {
     private config: IODataOptions;
-    private requests: ODataBuilder[];
+    private requests: OData[];
     private batchNumber: Guid;
 
     constructor(config: IODataOptions) {
@@ -17,7 +18,7 @@ export class ODataBatchBuilder {
         this.validateEndpoint();
     }
 
-    add(requests: ODataBuilder[]): ODataBatchBuilder {
+    add(requests: OData[]): Batch {
         requests.forEach((request) => this.requests.push(request));
         return this;
     }

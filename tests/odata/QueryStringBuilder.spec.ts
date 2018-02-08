@@ -1,15 +1,15 @@
-import { ODataQueryStringBuilder } from "../../src/odata/ODataQueryStringBuilder";
+import { QueryStringBuilder } from "../../src/odata/QueryStringBuilder";
 import { ODataQueryOption } from "../../src/odata/ODataConstants";
 
-describe("ODataQueryStringBuilder", () => {
+describe("QueryStringBuilder", () => {
     const aQuery = ODataQueryOption.Filter;
     const anotherQuery = ODataQueryOption.Select;
     const aQueryValue = "hello world";
 
-    let builder: ODataQueryStringBuilder;
+    let builder: QueryStringBuilder;
 
     beforeEach(() => {
-        builder = new ODataQueryStringBuilder();
+        builder = new QueryStringBuilder();
     });
 
     afterEach(() => {
