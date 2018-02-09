@@ -3,6 +3,7 @@ import { ODataQueryOption, CRLF } from "./ODataConstants";
 import { HttpRequestBuilder } from "../http/HttpRequestBuilder";
 import { IHttpHeader } from "../http/HttpHeader";
 import { QueryStringBuilder } from "./QueryStringBuilder";
+import { Url } from "../http/Url";
 
 export interface IODataOptions {
     endpoint: string;
@@ -12,12 +13,20 @@ export interface IODataOptions {
 
 export class OData {
     private config: IODataOptions;
+    private url: Url;
     private request: QueryStringBuilder;
     private data: string;
 
     constructor(config?: IODataOptions) {
         this.config = config;
         this.request = new QueryStringBuilder();
+
+        this.url = new Url(config.endpoint);
+    }
+
+    resource(resource: string): OData {
+        this.url.addPath(resource);
+        return this;
     }
 
     setVerb(verb: HttpMethod): OData {
@@ -103,7 +112,7 @@ export class OData {
             });
     }
 
-    private buildQuery() {
-        return this.config.endpoint + this.request.build();
+    buildQuery() {
+        return this.url.build() + this.request.build();
     }
 }
