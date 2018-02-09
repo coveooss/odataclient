@@ -29,7 +29,7 @@ export class QueryStringBuilder {
         }
     }
 
-    addQuery(name: ODataQueryOption,
+    addQuery(name: string,
              value: string) {
         this.queryList.push(new QueryComponent(name, value));
     }
