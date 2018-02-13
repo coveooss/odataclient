@@ -6,7 +6,7 @@
 [![bitHound Dev Dependencies](https://www.bithound.io/github/coveo/odataclient/badges/devDependencies.svg)](https://www.bithound.io/github/coveo/odataclient/master/dependencies/npm)
 [![Npm total downloads badge](https://img.shields.io/npm/dt/odataclient.svg)](https://www.npmjs.com/package/odataclient)
 
-OData client destined to be run in browsers. Highly inspired from [o.js](https://github.com/janhommes/o.js) and [odata-client](https://github.com/kanthoney/odata-client).
+Typescript OData client destined to be run in browsers. Highly inspired from [o.js](https://github.com/janhommes/o.js) and [odata-client](https://github.com/kanthoney/odata-client).
 
 ## Usage
 
@@ -59,6 +59,22 @@ client.build<T>();
 ```
 
 Launches an HTTP request and returns a `Promise<T>` where T is the expected type of the response object.
+
+### Full example
+
+### Sending a Query
+```typescript
+interface IAccount {
+    accountnumber: string;
+    name: string;
+}
+
+client
+    .resource("accounts")
+    .select(["name", "accountnumber"]);
+    .build<IODataCollection<IAccount>>()
+    .then(accounts => accounts.value.forEach(account => console.log(account.name)));
+```
 
 ## Install
 ```sh
