@@ -1,0 +1,24 @@
+sudo: false
+
+language: node_js
+
+node_js:
+  - '8.9'
+
+branches:
+  only:
+    - master
+
+addons:
+  chrome: stable
+
+install:
+  - npm install
+  - npm run build
+
+cache:
+  directories:
+    - node_modules
+
+script:
+ - npm run test

@@ -27,11 +27,15 @@ var configuration = {
         outputDir: 'bin/UT'
     },
     webpack: webpackConfig,
-    browsers:["ChromeHeadless"],
+    browsers:["ChromeHeadlessNoSandbox"],
     customLaunchers: {
         ChromeDebugging: {
-          base: 'Chrome',
-          flags: [ '--remote-debugging-port=9222' ]
+            base: 'Chrome',
+            flags: [ '--remote-debugging-port=9222' ]
+        },
+        ChromeHeadlessNoSandbox: {
+            base: 'ChromeHeadless',
+            flags: [ '--no-sandbox' ]
         }
     }
 };
