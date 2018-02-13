@@ -1,7 +1,16 @@
 {
   "name": "coveo-odata",
-  "version": "0.0.2",
-  "description": "",
+  "version": "0.0.3",
+  "description": "Typescript OData Client",
+  "keywords": [
+    "coveo",
+    "odata",
+    "client",
+    "js",
+    "typescript",
+    "web"
+  ],
+  "homepage": "https://github.com/coveo/odataclient",
   "main": "bin/js/odata.js",
   "types": "bin/js/src/Index.d.ts",
   "scripts": {
