@@ -63,6 +63,8 @@ export class HttpRequestBuilder implements IHttpRequestBuilder {
                     }
                 }
             }
+
+            xmlHttp.send(this.body);
         });
     }
 }
