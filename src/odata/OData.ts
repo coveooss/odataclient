@@ -67,16 +67,18 @@ export class OData {
 
     post(data: any): OData {
         this.config.httpVerb = HttpMethod.Post;
+        this.withBody(data);
         return this;
     }
 
     patch(data: any): OData {
         this.config.httpVerb = HttpMethod.Patch;
+        this.withBody(data);
         return this;
     }
 
-    withBody(data: string): OData {
-        this.data = data;
+    withBody(data: any): OData {
+        this.data = JSON.stringify(data);
         return this;
     }
 
@@ -100,10 +102,10 @@ export class OData {
         return `${body.join(CRLF)}${CRLF}`;
     }
 
-    build<T>(data?: any): Promise<T> {
+    build<T>(): Promise<T> {
         return new HttpRequestBuilder()
             .withUrl(this.buildQuery())
-            .withBody(JSON.stringify(data))
+            .withBody(this.data)
             .withHttpMethod(this.config.httpVerb)
             .withHeaders(this.config.headers)
             .build()
