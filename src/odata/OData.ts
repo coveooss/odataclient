@@ -4,6 +4,7 @@ import { HttpRequestBuilder } from "../http/HttpRequestBuilder";
 import { IHttpHeader } from "../http/HttpHeader";
 import { QueryStringBuilder } from "./QueryStringBuilder";
 import { Url } from "../http/Url";
+import { IRequest } from './IRequest';
 
 export interface IODataOptions {
     endpoint: string;
@@ -11,7 +12,7 @@ export interface IODataOptions {
     httpVerb?: HttpMethod;
 }
 
-export class OData {
+export class OData implements IRequest {
     private config: IODataOptions;
     private url: Url;
     private request: QueryStringBuilder;
@@ -77,6 +78,11 @@ export class OData {
         return this;
     }
 
+    withHeader(header: IHttpHeader): OData {
+        this.config.headers.push(header);
+        return this;
+    }
+
     withBody(data: any): OData {
         this.data = JSON.stringify(data);
         return this;
@@ -99,7 +105,7 @@ export class OData {
         body.push("");
         body.push(`${this.data ? this.data : ""}`);
 
-        return `${body.join(CRLF)}${CRLF}`;
+        return body.join(CRLF);
     }
 
     build<T>(): Promise<T> {
