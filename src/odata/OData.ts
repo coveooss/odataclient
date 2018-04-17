@@ -56,6 +56,11 @@ export class OData implements IRequest {
         return this;
     }
 
+    custom(key: string, value: string): OData {
+        this.request.addQuery(key, value);
+        return this;
+    }
+
     top(number: number): OData {
         this.request.addIfNotExists(ODataQueryOption.Top, number.toString());
         return this;
