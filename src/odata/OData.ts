@@ -4,6 +4,7 @@ import { HttpRequestBuilder } from "../http/HttpRequestBuilder";
 import { IHttpHeader } from "../http/HttpHeader";
 import { QueryStringBuilder } from "./QueryStringBuilder";
 import { Url } from "../http/Url";
+import { IRequest } from './IRequest';
 
 export interface IODataOptions {
     endpoint: string;
@@ -11,7 +12,7 @@ export interface IODataOptions {
     httpVerb?: HttpMethod;
 }
 
-export class OData {
+export class OData implements IRequest {
     private config: IODataOptions;
     private url: Url;
     private request: QueryStringBuilder;
@@ -55,6 +56,11 @@ export class OData {
         return this;
     }
 
+    custom(key: string, value: string): OData {
+        this.request.addQuery(key, value);
+        return this;
+    }
+
     top(number: number): OData {
         this.request.addIfNotExists(ODataQueryOption.Top, number.toString());
         return this;
@@ -77,6 +83,11 @@ export class OData {
         return this;
     }
 
+    withHeader(header: IHttpHeader): OData {
+        this.config.headers.push(header);
+        return this;
+    }
+
     withBody(data: any): OData {
         this.data = JSON.stringify(data);
         return this;
@@ -89,17 +100,14 @@ export class OData {
 
     buildBodyForBatch(): string {
         const body: string[] = [];
-        body.push("Content-Type: application/http");
-        body.push("Content-Transfer-Encoding:binary");
-        body.push("");
         body.push(`${this.config.httpVerb} ${this.buildQuery()} HTTP/1.1`);
         this.config.headers.forEach((value, index) => {
-            body.push(`${index}: ${value}`);
+            body.push(`${value.name}: ${value.value}`);
         });
         body.push("");
         body.push(`${this.data ? this.data : ""}`);
 
-        return `${body.join(CRLF)}${CRLF}`;
+        return body.join(CRLF);
     }
 
     build<T>(): Promise<T> {

@@ -4,23 +4,16 @@ import { HttpRequestBuilder } from "../http/HttpRequestBuilder";
 import { HttpMethod } from "../http/HttpConstants";
 import { IHttpHeader } from "../http/HttpHeader";
 import { Guid } from "../utils/Guid";
+import { AbstractRequestBatch } from './IBatch';
 
-export class Batch {
+export class Batch extends AbstractRequestBatch {
     private config: IODataOptions;
-    private requests: OData[];
-    private batchNumber: Guid;
 
     constructor(config: IODataOptions) {
-        this.requests = [];
+        super(Guid.newGuid(), "batch");
         this.config = config;
-        this.batchNumber = Guid.newGuid();
         this.ensureRequiredHeaders();
         this.validateEndpoint();
-    }
-
-    add(requests: OData[]): Batch {
-        requests.forEach((request) => this.requests.push(request));
-        return this;
     }
 
     buildAndRun(): Promise<string[]> {
@@ -46,7 +39,7 @@ export class Batch {
         this.config.headers.push({name: "OData-Version", value: "4.0"});
         this.config.headers.push({name: "OData-MaxVersion", value: "4.0"});
         this.config.headers.push({name: "Accept", value: "application/json"});
-        this.config.headers.push({name: "Content-Type", value: `multipart/mixed;boundary=batch_${this.batchNumber.toString()}`});
+        this.config.headers.push({name: "Content-Type", value: `multipart/mixed;boundary=batch_${this.id.toString()}`});
     }
 
     private validateEndpoint() {
@@ -56,15 +49,14 @@ export class Batch {
     }
 
     private buildRequestBody(): string {
-        const batchSeparator = this.getBatchSeparator();
-        const requestBody = this.requests.map((request) => request.buildBodyForBatch())
-                                         .join(`${batchSeparator}${CRLF}`);
-
-        return `${batchSeparator}${CRLF}${requestBody}${batchSeparator}--`;
-    }
-
-    private getBatchSeparator() {
-        return `--batch_${this.batchNumber.toString()}`;
+        const query = [];
+        this.requests.forEach(request => {
+            query.push(this.getBatchSeparator());
+            query.push(request.buildBodyForBatch());
+        });
+        return query.join(CRLF)
+            + CRLF
+            + `${this.getBatchSeparator()}--`;
     }
 
     private parseResponse(responseText: string): string[] {

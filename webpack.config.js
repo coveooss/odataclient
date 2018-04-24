@@ -12,6 +12,7 @@ if (minimize) {
 const packageName = "[name]";
 
 module.exports = [{
+  mode: "production",
   entry: {
     "odata": "./src/Index.ts",
   },

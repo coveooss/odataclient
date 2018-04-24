@@ -3,6 +3,7 @@ const webpackConfigs = require('./webpack.config.js');
 
 const componentsConfig = webpackConfigs[0];
 
+componentsConfig.mode = "development";
 componentsConfig.devtool = "inline-source-map";
 componentsConfig.module.rules.find(rule => rule.loader == "ts-loader").options = {
     compilerOptions: {
