@@ -100,12 +100,9 @@ export class OData implements IRequest {
 
     buildBodyForBatch(): string {
         const body: string[] = [];
-        body.push("Content-Type: application/http");
-        body.push("Content-Transfer-Encoding:binary");
-        body.push("");
         body.push(`${this.config.httpVerb} ${this.buildQuery()} HTTP/1.1`);
         this.config.headers.forEach((value, index) => {
-            body.push(`${index}: ${value}`);
+            body.push(`${value.name}: ${value.value}`);
         });
         body.push("");
         body.push(`${this.data ? this.data : ""}`);

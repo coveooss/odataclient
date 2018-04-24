@@ -1,6 +1,5 @@
 import { IHttpHeader } from "./HttpHeader";
 
-
 export interface IHttpRequestBuilder {
     withBody(body: string): IHttpRequestBuilder;
     withHeader(header: IHttpHeader): IHttpRequestBuilder;

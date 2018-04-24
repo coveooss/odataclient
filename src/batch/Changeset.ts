@@ -18,7 +18,6 @@ export class Changeset extends AbstractRequestBatch implements IRequest {
         this.requests.forEach((request: IRequest, index: number) => {
             query.push(this.getBatchSeparator());
             query.push("Content-Type: application/http");
-            query.push("Content-Type: application/http");
             query.push("Content-Transfer-Encoding:binary");
             query.push(`Content-ID: ${index}`);
             query.push("");
