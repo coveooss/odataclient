@@ -16,7 +16,7 @@ export class Batch extends AbstractRequestBatch {
         this.validateEndpoint();
     }
 
-    buildAndRun(): Promise<string[]> {
+    buildAndRun(parseResponse: boolean = true): Promise<string[]> {
         return new HttpRequestBuilder()
             .withUrl(this.buildQuery())
             .withBody(this.buildRequestBody())
@@ -24,7 +24,9 @@ export class Batch extends AbstractRequestBatch {
             .withHeaders(this.config.headers)
             .build()
             .then((response: XMLHttpRequest) => {
-                return this.parseResponse(response.responseText);
+                return parseResponse
+                    ? this.parseResponse(response.responseText)
+                    : [response.responseText];
             });
     }
 
