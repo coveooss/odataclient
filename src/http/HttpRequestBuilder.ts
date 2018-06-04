@@ -54,7 +54,12 @@ export class HttpRequestBuilder implements IHttpRequestBuilder {
                         resolve(xmlHttp);
                     } else {
                         let errorText: string = xmlHttp.responseText;
-                        const error = xmlHttp.responseText ? JSON.parse(xmlHttp.responseText) : null;
+                        let error = null;
+                        try {
+                            error = xmlHttp.responseText ? JSON.parse(xmlHttp.responseText) : null;
+                        } catch (error) {
+                            console.log("Unable to parse response.")
+                        }
                         if (error && error.message) {
                             errorText = error.message;
                         }
