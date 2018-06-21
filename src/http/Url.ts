@@ -13,7 +13,9 @@ export class Url {
     }
 
     public build(): string {
-        return `${this.protocol}//${this.urlBase}${this.pathname}${this.search.build()}`;
+        // In IE 11, anchor.pathname does not prepend a slash.
+        // It happens the port after the host as well, but this does not cause any issue.
+        return `${this.protocol}//${this.urlBase}${this.ensureStartsWithSlash(this.pathname)}${this.search.build()}`;
     }
 
     public addPath(path: string) {
@@ -37,5 +39,12 @@ export class Url {
                 this.search[splitParam[0]] = splitParam[1]
             }
         });
+    }
+
+    private ensureStartsWithSlash(str: string) {
+        if (str.charAt(0) !== "/") {
+            return `/${str}`;
+        }
+        return str;
     }
 }
