@@ -50,6 +50,6 @@ export class QueryStringBuilder {
 
     build(): string {
         const keys = Object.keys(this.queryList);
-        return keys.length > 0 ? `?${keys.map(query => query.toString()).join("&")}` : "";
+        return keys.length > 0 ? `?${keys.map(key => this.queryList[key].toString()).join("&")}` : "";
     }
 }
