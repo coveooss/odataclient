@@ -1,5 +1,6 @@
 export enum ODataQueryOption {
     Count = "$count",
+    Expand = "$expand",
     Filter = "$filter",
     OrderBy = "$orderby",
     Select = "$select",

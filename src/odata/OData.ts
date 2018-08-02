@@ -5,6 +5,7 @@ import { IHttpHeader } from "../http/HttpHeader";
 import { QueryStringBuilder } from "./QueryStringBuilder";
 import { Url } from "../http/Url";
 import { IRequest } from './IRequest';
+import { SystemQuery } from "./SystemQuery";
 
 export interface IODataOptions {
     endpoint: string;
@@ -12,15 +13,14 @@ export interface IODataOptions {
     httpVerb?: HttpMethod;
 }
 
-export class OData implements IRequest {
+export class OData extends SystemQuery implements IRequest {
     private config: IODataOptions;
     private url: Url;
-    private request: QueryStringBuilder;
     private data: string;
 
     constructor(config?: IODataOptions) {
+        super(new QueryStringBuilder())
         this.config = config;
-        this.request = new QueryStringBuilder();
 
         this.url = new Url(config.endpoint);
     }
@@ -32,37 +32,6 @@ export class OData implements IRequest {
 
     setVerb(verb: HttpMethod): OData {
         this.config.httpVerb = verb;
-        return this;
-    }
-
-    where: (filter: string) => OData = this.filter;
-    filter(filter: string): OData {
-        this.request.addIfNotExists(ODataQueryOption.Filter, filter);
-        return this;
-    }
-
-    orderby(order: string): OData {
-        this.request.addIfNotExists(ODataQueryOption.OrderBy, order);
-        return this;
-    }
-
-    select(attributes: string[]): OData {
-        this.request.addIfNotExists(ODataQueryOption.Select, attributes.join(","));
-        return this;
-    }
-
-    count(): OData {
-        this.request.addIfNotExists(ODataQueryOption.Count, "true");
-        return this;
-    }
-
-    custom(key: string, value: string): OData {
-        this.request.addQuery(key, value);
-        return this;
-    }
-
-    top(number: number): OData {
-        this.request.addIfNotExists(ODataQueryOption.Top, number.toString());
         return this;
     }
 
@@ -123,6 +92,6 @@ export class OData implements IRequest {
     }
 
     buildQuery() {
-        return this.url.build() + this.request.build();
+        return this.url.build() + super.buildQuery();
     }
 }

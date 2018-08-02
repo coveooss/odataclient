@@ -14,10 +14,10 @@ export class QueryComponent implements IQueryComponent {
 }
 
 export class QueryStringBuilder {
-    queryList: IQueryComponent[];
+    queryList: {[key: string]: IQueryComponent};
 
     constructor() {
-        this.queryList = [];
+        this.queryList = {};
     }
 
     addIfNotExists(name: ODataQueryOption,
@@ -25,20 +25,31 @@ export class QueryStringBuilder {
         if (this.containsQuery(name)) {
             throw new Error("There is already a query option with that name. You can not use them together/twice: " + name);
         } else {
-            this.queryList.push(new QueryComponent(name, value));
+            this.addQuery(name, value);
         }
     }
 
     addQuery(name: string,
              value: string) {
-        this.queryList.push(new QueryComponent(name, value));
+        this.queryList[name] = new QueryComponent(name, value);
+    }
+
+    addOrAppendQuery(name: ODataQueryOption,
+        value: string) {
+        if (this.containsQuery(name)) {
+            const query = this.queryList[name];
+            this.addQuery(name, `${query.value},${value}`);
+        } else {
+            this.addQuery(name, value);
+        }
     }
 
     containsQuery(query: ODataQueryOption) {
-        return this.queryList.some((q) => q.name === query);
+        return Object.keys(this.queryList).some(key => this.queryList[key].name === query);
     }
 
     build(): string {
-        return this.queryList.length > 0 ? `?${this.queryList.map((query) => query.toString()).join("&")}` : "";
+        const keys = Object.keys(this.queryList);
+        return keys.length > 0 ? `?${keys.map(query => query.toString()).join("&")}` : "";
     }
 }
