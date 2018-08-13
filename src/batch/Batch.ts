@@ -5,6 +5,7 @@ import { HttpMethod } from "../http/HttpConstants";
 import { IHttpHeader } from "../http/HttpHeader";
 import { Guid } from "../utils/Guid";
 import { AbstractRequestBatch } from './IBatch';
+import { StringUtils } from "../utils/StringUtils";
 
 export class Batch extends AbstractRequestBatch {
     private config: IODataOptions;
@@ -45,7 +46,7 @@ export class Batch extends AbstractRequestBatch {
     }
 
     private validateEndpoint() {
-        if (!this.config.endpoint.endsWith("/")) {
+        if (!StringUtils.endsWith(this.config.endpoint, "/")) {
             this.config.endpoint = this.config.endpoint + "/";
         }
     }

@@ -1,4 +1,5 @@
 import { QueryStringBuilder, QueryComponent } from "../odata/QueryStringBuilder";
+import { StringUtils } from "../utils/StringUtils";
 
 export class Url {
     private protocol: string;
@@ -19,7 +20,7 @@ export class Url {
     }
 
     public addPath(path: string) {
-        if (this.pathname.endsWith("/")) {
+        if (StringUtils.endsWith(this.pathname, "/")) {
             this.pathname = this.pathname.substring(0, this.pathname.length - 1);
         }
         this.pathname += `/${path}`;

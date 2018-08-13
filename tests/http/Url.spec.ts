@@ -1,4 +1,5 @@
 import { Url } from "../../src/http/Url";
+import { StringUtils } from "../../src/utils/StringUtils";
 
 describe("Url", () => {
     describe("constructor", () => {
@@ -38,7 +39,7 @@ describe("Url", () => {
                 { inputString: "/a/b?a=2", expectedUrl: "/a/b?a=2" },
             ].forEach(test => {
                 const url = new Url(test.inputString);
-                expect(url.build().endsWith(test.expectedUrl)).toBeTruthy();
+                expect(StringUtils.endsWith(url.build(), test.expectedUrl)).toBeTruthy();
             });
         });
     });
