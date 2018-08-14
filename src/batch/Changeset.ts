@@ -9,6 +9,10 @@ export class Changeset extends AbstractRequestBatch implements IRequest {
         super(Guid.newGuid(), "changeset");
     }
 
+    appendToBatch(query: string[], index: number) {
+        query.push(this.buildBodyForBatch());
+    }
+
     buildBodyForBatch(): string {
         const query = [
             `Content-Type: multipart/mixed; boundary=changeset_${this.id.toString()}`,
@@ -17,11 +21,7 @@ export class Changeset extends AbstractRequestBatch implements IRequest {
 
         this.requests.forEach((request: IRequest, index: number) => {
             query.push(this.getBatchSeparator());
-            query.push("Content-Type: application/http");
-            query.push("Content-Transfer-Encoding:binary");
-            query.push(`Content-ID: ${index}`);
-            query.push("");
-            query.push(request.buildBodyForBatch())
+            request.appendToBatch(query, index)
         });
 
         return query.join(CRLF)

@@ -1,3 +1,3 @@
 export interface IRequest {
-    buildBodyForBatch(): string;
+    appendToBatch(query: string[], contentId: number);
 }

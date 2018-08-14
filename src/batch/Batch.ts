@@ -55,7 +55,7 @@ export class Batch extends AbstractRequestBatch {
         const query = [];
         this.requests.forEach(request => {
             query.push(this.getBatchSeparator());
-            query.push(request.buildBodyForBatch());
+            request.appendToBatch(query, null);
         });
         return query.join(CRLF)
             + CRLF

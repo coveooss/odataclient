@@ -67,6 +67,16 @@ export class OData extends SystemQuery implements IRequest {
         return this;
     }
 
+    appendToBatch(query: string[], contentId: number) {
+        query.push("Content-Type: application/http");
+        query.push("Content-Transfer-Encoding:binary");
+        if (typeof(contentId) === "number") {
+            query.push(`Content-ID: ${contentId}`);
+        }
+        query.push("");
+        query.push(this.buildBodyForBatch())
+    }
+
     buildBodyForBatch(): string {
         const body: string[] = [];
         body.push(`${this.config.httpVerb} ${this.buildQuery()} HTTP/1.1`);
